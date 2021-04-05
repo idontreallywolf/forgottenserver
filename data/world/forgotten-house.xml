@@ -14,8 +14,6 @@
 	<house name="Hill Hut 2" houseid="12" entryx="134" entryy="359" entryz="5" rent="0" townid="2" size="23" />
 	<house name="Farm Lane 1" houseid="13" entryx="117" entryy="379" entryz="7" rent="0" townid="2" size="16" />
 	<house name="Farm Lane 2" houseid="14" entryx="116" entryy="391" entryz="7" rent="0" townid="2" size="30" />
-	<house name="Church Avenue 1" houseid="15" entryx="147" entryy="375" entryz="7" rent="0" townid="2" size="18" />
-	<house name="Church Avenue 2" houseid="16" entryx="147" entryy="382" entryz="7" rent="0" townid="2" size="18" />
 	<house name="Church Avenue 3" houseid="17" entryx="151" entryy="400" entryz="7" rent="0" townid="2" size="34" />
 	<house name="Church Avenue 4" houseid="18" entryx="151" entryy="404" entryz="7" rent="0" townid="2" size="23" />
 	<house name="Church Avenue 5" houseid="19" entryx="159" entryy="400" entryz="7" rent="0" townid="2" size="16" />
