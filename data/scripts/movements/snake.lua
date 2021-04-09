@@ -27,7 +27,11 @@ local config = {
 	SPEED_INCREMENT = 100, -- 0.1s
 
 	-- ActionId to be used on enter tile
-	TILE_ACTION_ID = 12345
+	TILE_ACTION_ID = 12345,
+
+	-- How long a player should wait before they can play again
+	PLAYER_PLAY_STORAGE = 191214,
+	PLAYER_PLAY_DELAY = 10 -- 10 seconds
 }
 
 -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ##
@@ -77,6 +81,7 @@ end
 local function showScore(player, score)
 	local text = "Snake Score: " .. score
 	player:sendTextMessage(MESSAGE_STATUS_CONSOLE_ORANGE, text)
+	player:setStorageValue(config.PLAYER_PLAY_STORAGE, config.PLAYER_PLAY_DELAY + os.time())
 end
 
 -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ## -- ##
@@ -233,9 +238,9 @@ local function init(player)
 	player:teleportTo(config.CONTROL_POS)
 
 	local headPosition = Position(
-		config.CONTROL_POS.x - 1,
-		config.CONTROL_POS.y - 1,
-		config.CONTROL_POS.z + 1
+		config.SNAKE_SPAWN_POS.x,
+		config.SNAKE_SPAWN_POS.y,
+		config.SNAKE_SPAWN_POS.z
 	)
 
 	gameLoop(player:getId(), config.SNAKE_START_SCORE, config.SPEED_START, headPosition)
@@ -250,9 +255,20 @@ function snakeEnter.onStepIn(player, item, position, fromPosition)
 	if controlTile and controlTile:getTopCreature() then
 		player:sendTextMessage(MESSAGE_STATUS_SMALL, 'The game is currently occupied. Try again later.')
 		player:teleportTo(fromPosition)
+		fromPosition:sendMagicEffect(CONST_ME_POFF)
 		return true
 	end
+
+	local lastPlayed = player:getStorageValue(config.PLAYER_PLAY_STORAGE)
+	if lastPlayed > os.time() then
+		player:sendTextMessage(MESSAGE_STATUS_SMALL, 'You need to wait ' .. (lastPlayed - os.time()) .. ' seconds.')
+		player:teleportTo(fromPosition)
+		fromPosition:sendMagicEffect(CONST_ME_POFF)
+		return true
+	end
+
 	init(player)
+	return true
 end
 snakeEnter:aid(config.TILE_ACTION_ID)
 snakeEnter:register()
